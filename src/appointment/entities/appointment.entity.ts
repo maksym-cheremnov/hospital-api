@@ -12,7 +12,7 @@ export enum Statuses {
   PAID = 'Paid',
 }
 
-@Entity()
+@Entity({ name: 'appointment' })
 export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;

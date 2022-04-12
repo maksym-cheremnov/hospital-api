@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { updatePatientDto } from './dto/update-patient.dto';
+import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Patient } from './entities/patient.entity';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class PatientService {
     return patient;
   }
 
-  async update(id: number, updatePatientDto: updatePatientDto): Promise<void> {
+  async update(id: number, updatePatientDto: UpdatePatientDto): Promise<void> {
     const patient = await this.patientRepository.findOne(id);
     if (!patient) {
       throw new HttpException(
@@ -69,5 +69,12 @@ export class PatientService {
     await this.patientRepository.delete(id);
   }
 
-  async getMostPopular() {}
+  async getMostPopular() {
+    await this.patientRepository
+      .createQueryBuilder('patient')
+      .select('patient.pet_type', 'pet type')
+      .distinct(true)
+      .addSelect('patient.pet_type', 'count')
+      .getCount();
+  }
 }

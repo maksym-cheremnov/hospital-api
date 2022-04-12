@@ -7,7 +7,7 @@ export enum PetType {
   BIRD = 'Bird',
 }
 
-@Entity()
+@Entity({ name: 'patient' })
 export class Patient {
   @PrimaryGeneratedColumn()
   id: number;
