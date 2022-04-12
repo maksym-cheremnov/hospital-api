@@ -1,8 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable, Post } from '@nestjs/common';
+import { AppointmentService } from './appointment/appointment.service';
+import { CreatePatientDto } from './patient/dto/create-patient.dto';
+import { PatientService } from './patient/patient.service';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+  constructor(
+    private patientServices: PatientService,
+    private appointmentServices: AppointmentService,
+  ) {}
+
+  async appointmentsByDate() {}
+
+  async getUnpaidAppointments() {}
+
+  async upaidAppointmentByPatient() {}
+
+  async getBalanceStatistics() {}
+
+  async getPetStatistics() {}
 }

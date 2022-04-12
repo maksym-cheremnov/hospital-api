@@ -43,8 +43,12 @@ export class AppointmentService {
     return this.appointmentRepository.save(appointment);
   }
 
-  async findAll(): Promise<Appointment[]> {
-    return this.appointmentRepository.find();
+  async findAll(patientId: number): Promise<Appointment[]> {
+    return this.appointmentRepository.find({
+      where: {
+        patient: patientId,
+      },
+    });
   }
 
   async findOne(id: number): Promise<Appointment> {
