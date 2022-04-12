@@ -70,11 +70,8 @@ export class PatientService {
   }
 
   async getMostPopular() {
-    await this.patientRepository
-      .createQueryBuilder('patient')
-      .select('patient.pet_type', 'pet type')
-      .distinct(true)
-      .addSelect('patient.pet_type', 'count')
-      .getCount();
+    return await this.patientRepository.query(
+      'SELECT pet_type,  COUNT(*) as quantity, SUM(ap.fee_amount) as income FROM  petient  LEFT JOIN appointment as ap where appointment.patient = patient.id  GROUP BY pet_type;',
+    );
   }
 }

@@ -113,9 +113,17 @@ export class AppointmentService {
     await this.appointmentRepository.delete(id);
   }
 
-  async getWeekly() {}
+  async getWeekly() {
+    const rawData = await this.appointmentRepository.query(
+      'SELECT fee_status, COUNT(*) as quantity, SUM(fee_amount) as amount, SUM(*) as balance FROM appointment WHERE start_time > DATE_SUB(NOW(), INTERVAL 1 WEEK)',
+    );
+    return rawData;
+  }
 
-  async getMonthly() {}
-
-
+  async getMonthly() {
+    const rawData = await this.appointmentRepository.query(
+      'SELECT fee_status, COUNT(*) as quantity, SUM(fee_amount) as amount, SUM(*) as balance FROM appointment WHERE start_time >  DATE_SUB(NOW(), INTERVAL 1 MONTH)',
+    );
+    return rawData;
+  }
 }

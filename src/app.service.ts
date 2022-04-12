@@ -40,10 +40,16 @@ export class AppService {
   }
 
   async getBalanceStatistics() {
-    
+    const weekly = await this.appointmentServices.getWeekly();
+    const mountly = await this.appointmentServices.getMonthly();
+    return {
+      weekly: weekly,
+      mountly: mountly,
+    };
   }
 
   async getPetStatistics() {
-
+    const petData = await this.patientServices.getMostPopular();
+    return petData;
   }
 }
