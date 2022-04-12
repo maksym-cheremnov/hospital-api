@@ -17,6 +17,7 @@ export class AppointmentService {
   }
 
   update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+    
     return `This action updates a #${id} appointment`;
   }
 
