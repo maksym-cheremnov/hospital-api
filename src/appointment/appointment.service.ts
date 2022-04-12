@@ -4,7 +4,7 @@ import { Patient } from 'src/patient/entities/patient.entity';
 import { Repository } from 'typeorm';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { Appointment } from './entities/appointment.entity';
+import { Appointment, Statuses } from './entities/appointment.entity';
 
 @Injectable()
 export class AppointmentService {
@@ -47,6 +47,23 @@ export class AppointmentService {
     return this.appointmentRepository.find({
       where: {
         patient: patientId,
+      },
+    });
+  }
+
+  async findUnpaid(): Promise<Appointment[]> {
+    return this.appointmentRepository.find({
+      where: {
+        fee_status: Statuses.UNPAID,
+      },
+    });
+  }
+
+  async findUnpaidByPatient(patientId: number): Promise<Appointment[]> {
+    return this.appointmentRepository.find({
+      where: {
+        patient: patientId,
+        fee_status: Statuses.UNPAID,
       },
     });
   }
@@ -95,4 +112,10 @@ export class AppointmentService {
     }
     await this.appointmentRepository.delete(id);
   }
+
+  async getWeekly() {}
+
+  async getMonthly() {}
+
+
 }

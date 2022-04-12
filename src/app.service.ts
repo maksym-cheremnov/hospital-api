@@ -1,6 +1,5 @@
-import { Body, Injectable, Post } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AppointmentService } from './appointment/appointment.service';
-import { CreatePatientDto } from './patient/dto/create-patient.dto';
 import { PatientService } from './patient/patient.service';
 
 @Injectable()
@@ -10,13 +9,41 @@ export class AppService {
     private appointmentServices: AppointmentService,
   ) {}
 
-  async appointmentsByDate() {}
+  async getUnpaidAppointments() {
+    const unpaidAppointments = await this.appointmentServices.findUnpaid();
+    if (!unpaidAppointments) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `There is no unpaid appointments`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return unpaidAppointments;
+  }
 
-  async getUnpaidAppointments() {}
+  async upaidAppointmentByPatient(patientId: number) {
+    const upaidByPatient = await this.appointmentServices.findUnpaidByPatient(
+      patientId,
+    );
+    if (!upaidByPatient) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `There is no unpaid appointments by this patient`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return upaidByPatient;
+  }
 
-  async upaidAppointmentByPatient() {}
+  async getBalanceStatistics() {
+    
+  }
 
-  async getBalanceStatistics() {}
+  async getPetStatistics() {
 
-  async getPetStatistics() {}
+  }
 }
