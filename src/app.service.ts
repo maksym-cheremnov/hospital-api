@@ -23,7 +23,7 @@ export class AppService {
     return unpaidAppointments;
   }
 
-  async upaidAppointmentByPatient(patientId: number) {
+  async unpaidAppointmentByPatient(patientId: number) {
     const upaidByPatient = await this.appointmentServices.findUnpaidByPatient(
       patientId,
     );
