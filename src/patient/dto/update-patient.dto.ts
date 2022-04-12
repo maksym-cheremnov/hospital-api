@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdatePatientDt {
+export class updatePatientDto {
   @IsString()
   @IsNotEmpty()
   public owner_address: string;

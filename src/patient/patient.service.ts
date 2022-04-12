@@ -1,26 +1,71 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePatientDto } from './dto/create-patient.dto';
-import { UpdatePatientDto } from './dto/update-patient.dto';
+import { updatePatientDto } from './dto/update-patient.dto';
+import { Patient } from './entities/patient.entity';
 
 @Injectable()
 export class PatientService {
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+  constructor(
+    @InjectRepository(Patient) private patientRepository: Repository<Patient>,
+  ) {}
+
+  async create(createPatientDto: CreatePatientDto): Promise<Patient> {
+    const patient = new Patient();
+
+    patient.pet_name = createPatientDto.pet_name;
+    patient.pet_type = createPatientDto.pet_type;
+    patient.owner_name = createPatientDto.owner_name;
+    patient.owner_address = createPatientDto.owner_address;
+    patient.owner_phone = createPatientDto.owner_phone;
+
+    return this.patientRepository.save(patient);
   }
 
-  findAll() {
-    return `This action returns all patient`;
+  async findAll(): Promise<Patient[]> {
+    return this.patientRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} patient`;
+  async findOne(id: number): Promise<Patient> {
+    const patient = await this.patientRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `There is no patient with this id: ${id}`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return patient;
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: number, updatePatientDto: updatePatientDto): Promise<void> {
+    const patient = await this.patientRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `There is no patient with this id: ${id}`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    await this.patientRepository.update(id, updatePatientDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: number): Promise<void> {
+    const patient = await this.patientRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `There is no patient with this id: ${id}`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    await this.patientRepository.delete(id);
   }
 }

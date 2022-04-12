@@ -16,7 +16,7 @@ export class UpdateAppointmentDto {
 
   @IsDate()
   @IsNotEmpty()
-  public fee_amount: Date;
+  public fee_amount: string;
 
   @IsNotEmpty()
   public fee_status: Statuses;
