@@ -7,6 +7,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Patient } from './patient/entities/patient.entity';
 import { Appointment } from './appointment/entities/appointment.entity';
 import { ConfigModule } from '@nestjs/config';
+import { PatientService } from './patient/patient.service';
+import { AppointmentService } from './appointment/appointment.service';
+import { PatientController } from './patient/patient.controller';
+import { AppointmentController } from './appointment/appointment.controller';
 
 @Module({
   imports: [
